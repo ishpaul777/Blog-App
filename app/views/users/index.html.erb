@@ -1,1 +1,10 @@
-<h1>This is Users Page</h1>
+<ul class="list-group" style='width: 50vw; margin: auto;'>
+	<% @users.each do |user| %>
+		<%# ADD link to user page %>
+		<%= link_to "/users/#{user.id}", class:"text-decoration-none" do%>
+		<li class="list-group-item">
+			<%= render 'shared/user', name: user.name, photo: user.photo, postCounter: user.postCounter %>
+		</li>
+	 <% end %>
+	<% end %>
+</ul>

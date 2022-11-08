@@ -1,1 +1,25 @@
-<h1>This is users Posts Page</h1>
+<div class="flex-column d-flex" style='width: 50vw; margin: 30px auto;'>
+	<%= render partial: 'shared/user', locals: {name: @user.name, photo: @user.photo, postCounter: @user.postCounter}  %>
+	<ul class="list-group mt-4" >
+	<% @posts.each do |post| %>
+		<%= link_to "/users/#{@user.id}/posts/#{post.id}", class:"text-decoration-none" do%>
+			<li class="list-group-item">
+			<%= render partial:'shared/post', locals: { title: post.title, text: post.text, likesCounter: post.likesCounter, commentsCounter: post.commentsCounter }	%>
+			<%# render 5 comments on post %>
+			<%# if post has comments then render this %>
+
+			<% if post.comments.length > 0 %>
+			<h5>Comments</h5>
+			<ul class="list-group mt-4" >
+			<% post.recent_comments.each do |comment| %>
+				<li class="list-group-item">
+					<%= User.find(comment.author_id).name %>: <%= comment.text %>
+				</li>
+			<% end %>
+			</ul>
+			<% end %>
+			</li>
+	  <% end %>
+	<% end %>
+	</ul>
+</div>

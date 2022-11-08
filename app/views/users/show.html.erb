@@ -1,1 +1,20 @@
-<h1>This is individual user page</h1>
+<div class="flex-column d-flex" style='width: 50vw; margin: 30px auto;'>
+	<%= render partial: 'shared/user', locals: {name: @user.name, photo: @user.photo, postCounter: @user.postCounter}  %>
+	 <div class="user-bio mt-4">
+    <h2>Bio</h2>
+    <p><%= @user.bio %></p>
+  </div>
+	<ul class="list-group mt-4" >
+	<% @user.three_most_recent_posts.each do |post| %>
+		<%= link_to "/users/#{@user.id}/posts/#{post.id}", class:"text-decoration-none" do%>
+			<li class="list-group-item">
+				<%# render post partial %>
+			<%= render partial:'shared/post', locals: { title: post.title, text: post.text, likesCounter: post.likesCounter, commentsCounter: post.commentsCounter }	%>
+			</li>
+	  <% end %>
+	<% end %>
+	</ul>
+	<%= link_to "/users/#{@user.id}/posts", class: "btn btn-primary mt-4" do%>
+		See all posts
+	<% end %>
+</div>
