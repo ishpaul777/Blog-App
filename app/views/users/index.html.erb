@@ -1,5 +1,7 @@
 <div style='width: 50vw; margin: 2rem auto;'>
 <%= link_to 'Create Post', new_post_path, class: "btn btn-primary align-self-center" %>
+<%# <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete } , class: "btn btn-danger align-self-center" %> 
+
 <h3 class='mt-5'>List of all users-</h3>
 <ul class="list-group mt-5" >
 	<% @users.each do |user| %>
