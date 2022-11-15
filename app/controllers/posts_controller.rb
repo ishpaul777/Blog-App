@@ -2,8 +2,12 @@ class PostsController < ApplicationController
   # this will show all posts of a user
   def index
     # find all posts of this user
-    @posts = Post.includes(:author).where(author_id: params[:user_id])
-    @user = User.find(params[:user_id])
+    if user_signed_in?
+      @posts = Post.includes(:author).where(author_id: params[:user_id])
+      @user = User.find(params[:user_id])
+    else
+      redirect_to new_user_session_path
+    end
   end
 
   # this will show a post
