@@ -3,6 +3,7 @@ class Post < ApplicationRecord
   has_many :comments
   has_many :likes
   after_save :update_user_posts_count
+  after_destroy :update_user_posts_count
   after_initialize :init
 
   validates :title, presence: true, length: { maximum: 250 }

@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  load_and_authorize_resource
+
   # this will show all posts of a user
   def index
     # find all posts of this user
@@ -39,6 +41,23 @@ class PostsController < ApplicationController
     end
   end
 
+  # this will delete a post
+  def destroy
+    @post = Post.find(params[:id])
+    @user = @post.author
+    # delete all comments of this post
+    @post.comments.each(&:destroy)
+    # delete all likes of this post
+    @post.likes.each(&:destroy)
+    @post.destroy
+    respond_to do |format|
+      format.html do
+        flash[:notice] = 'Post was successfully deleted.'
+        redirect_to "/users/#{@user.id}"
+      end
+    end
+  end
+
   # this will create a comment
   def create_comment
     @comment = Comment.new(comment_params)
@@ -46,10 +65,22 @@ class PostsController < ApplicationController
     @comment.author = current_user
 
     if @comment.save
-      flash[:success] = 'Comment created successfully'
+      flash[:notice] = 'Comment created successfully'
       redirect_to post_path
     else
-      flash.now[:error] = 'Error: Comment could not be created'
+      flash.now[:alert] = 'Error: Comment could not be created'
+    end
+  end
+
+  # this will delete a comment
+  def destroy_comment
+    @comment = Comment.find(params[:comment])
+    @comment.destroy
+    respond_to do |format|
+      format.html do
+        flash[:notice] = 'Comment was successfully deleted.'
+        redirect_to "/users/#{@comment.post.id}/posts/#{@comment.post.id}"
+      end
     end
   end
 
@@ -57,10 +88,10 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     @like = Like.new(author_id: current_user.id, post_id: @post.id)
     if @like.save
-      flash[:success] = 'Post liked successfully'
+      flash[:notice] = 'Post liked successfully'
       redirect_to post_path
     else
-      flash.now[:error] = 'Error: Post could not be liked'
+      flash.now[:alert] = 'Error: Post could not be liked'
     end
   end
 

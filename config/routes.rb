@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get 'posts/new', to: 'posts#new', as: 'new_post' # new
   post '/posts/new', to: 'posts#create', as: 'create_post' # create
   get '/users/:user_id/posts/:id', to: 'posts#show', as: 'post' # show
+  delete '/users/:user_id/posts/:id', to: 'posts#destroy', as: 'delete_post' # delete
+  delete '/users/:user_id/posts/:id/:comment', to: 'posts#destroy_comment', as: 'destroy_comment'
   post '/users/:user_id/posts/:id', to: 'posts#create_comment'
   post '/users/:user_id/posts/:id/like', to: 'posts#like', as: 'like_post'
 
