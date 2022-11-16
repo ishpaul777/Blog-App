@@ -17,7 +17,7 @@
   <div class="comments mt-4">
 		<h3>Comments</h3>
     <div style='width: 30vw; margin: 2rem auto;'>
-      <%= form_with model: @comment, url: post_path, class: 'form-group', scope: :form_comment  do |form| %>
+      <%= form_with model: @comment, url: post_comments_path, class: 'form-group', scope: :form_comment  do |form| %>
       	<%= form.text_area :text, class: 'form-control' %>
       	<%= form.submit 'Add comment', class: "btn btn-primary mt-3" %>
       <% end %>
@@ -27,10 +27,11 @@
       <p>
         <%= User.find(comment.author_id).name %>: <%= comment.text %>
       </p>
-        <%# if the comment is of the user he can delete it %>
-         <% if can? :manage, comment %>
-          <%= link_to 'Delete Comment', destroy_comment_path(comment: comment.id), data: { turbo_method: :delete }, class: "btn btn-danger" %>
-        <% end %>
+      <%# if the comment is of the user he can delete it %>
+      <% if can? :destroy_comment, comment %>
+        <%= link_to 'Delete Comment', delete_comment_path(comment: comment.id),  
+        data: { confirm: 'Are you sure?', turbo_method: :delete }, class: "btn btn-danger" %>
+      <% end %>
     <% end %>
   </div>
 </div>

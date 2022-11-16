@@ -58,50 +58,9 @@ class PostsController < ApplicationController
     end
   end
 
-  # this will create a comment
-  def create_comment
-    @comment = Comment.new(comment_params)
-    @comment.post = Post.find(params[:id])
-    @comment.author = current_user
-
-    if @comment.save
-      flash[:notice] = 'Comment created successfully'
-      redirect_to post_path
-    else
-      flash.now[:alert] = 'Error: Comment could not be created'
-    end
-  end
-
-  # this will delete a comment
-  def destroy_comment
-    @comment = Comment.find(params[:comment])
-    @comment.destroy
-    respond_to do |format|
-      format.html do
-        flash[:notice] = 'Comment was successfully deleted.'
-        redirect_to "/users/#{@comment.post.id}/posts/#{@comment.post.id}"
-      end
-    end
-  end
-
-  def like
-    @post = Post.find(params[:id])
-    @like = Like.new(author_id: current_user.id, post_id: @post.id)
-    if @like.save
-      flash[:notice] = 'Post liked successfully'
-      redirect_to post_path
-    else
-      flash.now[:alert] = 'Error: Post could not be liked'
-    end
-  end
-
   private
 
   def post_params
     params.require(:post).permit(:title, :text)
-  end
-
-  def comment_params
-    params.require(:form_comment).permit(:text)
   end
 end

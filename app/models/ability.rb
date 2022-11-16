@@ -13,7 +13,7 @@ class Ability
     can :like, Post
     # if user signed in can comment on the post
     can :create_comment, Post
-    # if user has commented on the post can delete the comment
+    # if user signed in can delete the comment
     can :destroy_comment, Post do |post|
       post.comments.where(author_id: user.id).exists?
     end

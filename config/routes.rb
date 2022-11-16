@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
-
+  
   # delete '/users/sign_out', to: 'devise/sessions#destroy'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   
@@ -14,8 +14,9 @@ Rails.application.routes.draw do
   post '/posts/new', to: 'posts#create', as: 'create_post' # create
   get '/users/:user_id/posts/:id', to: 'posts#show', as: 'post' # show
   delete '/users/:user_id/posts/:id', to: 'posts#destroy', as: 'delete_post' # delete
-  delete '/users/:user_id/posts/:id/:comment', to: 'posts#destroy_comment', as: 'destroy_comment'
-  post '/users/:user_id/posts/:id', to: 'posts#create_comment'
-  post '/users/:user_id/posts/:id/like', to: 'posts#like', as: 'like_post'
+  post '/users/:user_id/posts/:id', to: 'comments#create', as: 'post_comments' # create
+  delete '/users/:user_id/posts/:id/:comment', to: 'comments#destroy', as: 'delete_comment' # delete
+  post '/users/:user_id/posts/:id/like', to: 'likes#create', as: 'like_post' # create
+  
 
 end
