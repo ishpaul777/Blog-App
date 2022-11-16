@@ -14,9 +14,11 @@ class Ability
     # if user signed in can comment on the post
     can :create_comment, Post
     # if user signed in can delete the comment
-    can :destroy_comment, Post do |post|
-      post.comments.where(author_id: user.id).exists?
-    end
+    can :destroy, Comment, author_id: user.id
+
+    # can :destroy_comment, Post do |post|
+    #   post.comments.where(author_id: user.id).exists?
+    # end
 
     return unless user.role == 'admin'
 
