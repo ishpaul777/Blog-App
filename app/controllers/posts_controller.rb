@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  load_and_authorize_resource
+
   # this will show all posts of a user
   def index
     # find all posts of this user
@@ -39,28 +41,20 @@ class PostsController < ApplicationController
     end
   end
 
-  # this will create a comment
-  def create_comment
-    @comment = Comment.new(comment_params)
-    @comment.post = Post.find(params[:id])
-    @comment.author = current_user
-
-    if @comment.save
-      flash[:success] = 'Comment created successfully'
-      redirect_to post_path
-    else
-      flash.now[:error] = 'Error: Comment could not be created'
-    end
-  end
-
-  def like
+  # this will delete a post
+  def destroy
     @post = Post.find(params[:id])
-    @like = Like.new(author_id: current_user.id, post_id: @post.id)
-    if @like.save
-      flash[:success] = 'Post liked successfully'
-      redirect_to post_path
-    else
-      flash.now[:error] = 'Error: Post could not be liked'
+    @user = @post.author
+    # delete all comments of this post
+    @post.comments.each(&:destroy)
+    # delete all likes of this post
+    @post.likes.each(&:destroy)
+    @post.destroy
+    respond_to do |format|
+      format.html do
+        flash[:notice] = 'Post was successfully deleted.'
+        redirect_to "/users/#{@user.id}"
+      end
     end
   end
 
@@ -68,9 +62,5 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:title, :text)
-  end
-
-  def comment_params
-    params.require(:form_comment).permit(:text)
   end
 end
