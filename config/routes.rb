@@ -16,5 +16,17 @@ Rails.application.routes.draw do
   post '/users/:user_id/posts/:id', to: 'comments#create', as: 'post_comments' # create
   delete '/users/:user_id/posts/:post_id/comments/:id', to: 'comments#destroy', as: 'delete_comment' # delete
   post '/users/:user_id/posts/:id/like', to: 'likes#create', as: 'like_post' # create
+
+  post 'authenticate', to: 'authentication#authenticate'
   
+  namespace :api do
+    namespace :v1 do
+      resources :users, only: [:index, :show, :create, :destroy] do
+        resources :posts, only: [:index, :show, :create, :destroy] do
+          resources :comments, only: [:index, :create, :destroy]
+        end
+      end
+    end
+  end
+
 end

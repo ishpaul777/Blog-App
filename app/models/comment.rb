@@ -9,4 +9,8 @@ class Comment < ApplicationRecord
   def update_post_comments_count
     post.update_comments_count
   end
+
+  def as_json(_options = {})
+    super(only: %i[text author_id post_id])
+  end
 end

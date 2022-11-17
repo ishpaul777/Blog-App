@@ -31,6 +31,12 @@ gem 'jbuilder'
 gem 'rubocop', '>= 1.0', '< 2.0'
 
 gem 'cancancan'
+
+gem 'bcrypt', '~> 3.1.7'
+
+gem 'jwt'
+
+gem 'simple_command'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

@@ -18,6 +18,10 @@ class User < ApplicationRecord
     role == requested_role.to_s
   end
 
+  def as_json(_options = {})
+    super(only: %i[id name postCounter])
+  end
+
   def three_most_recent_posts
     posts.order(created_at: :desc).limit(3)
   end
