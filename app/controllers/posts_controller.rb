@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!
   load_and_authorize_resource
 
   # this will show all posts of a user
